@@ -1,7 +1,8 @@
-#include <gl/glaux.h>
-#include <gl/glut.h>
+#include "gl/glaux.h"
+#include "gl/glut.h"
 #include <cmath>
 #include <stdio.h>
+#include <tchar.h>
 
 #define BALL_RECT	20.0
 #define BALL_NUM	7
@@ -249,15 +250,16 @@ void check() {
 }
 
 //이미지 파일을 열어 GLuint변수에 저장 
-AUX_RGBImageRec* LoadBMPFile(char* filename)
+AUX_RGBImageRec* LoadBMPFile(TCHAR* filename)
 {
 	FILE *hFile = NULL;
+    errno_t err = NULL;
 
 	if (!filename) return NULL;
 
-	hFile = fopen(filename, "r"); //이미지 파일 열기
+	err = _tfopen_s(&hFile, filename, _T("r")); //이미지 파일 열기
 
-	if (hFile) {
+	if (err == 0) {
 		fclose(hFile);
 		return auxDIBImageLoad(filename); //열은 파일을 AUX_RGBImageRec형태로 변형
 	}
